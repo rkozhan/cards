@@ -1,0 +1,10 @@
+.all {
+    &__title {
+        &-memo {
+            color: rgb(120, 255, 120);
+        }
+        &-like {
+            color: rgb(255, 90, 90);
+        }
+    }
+}

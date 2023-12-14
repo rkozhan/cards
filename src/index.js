@@ -1,17 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import App from './components/app/app';
+
+import { Provider } from 'react-redux';
+import { BrowserRouter as Rowter} from 'react-router-dom';
+
+import ErrorBoundry from './components/error-boundry/error-boundry';
+import CardService from './services/card-service';
+import CardServiceContext from './components/card-service-context/card-service-context';
+import store from './store';
+
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+
+const cardService = new CardService();
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  //<React.StrictMode>
+    <Provider store={store}>
+      <ErrorBoundry>
+        <CardServiceContext.Provider value={cardService}>
+          <Rowter>
+            <App />
+          </Rowter>
+        </CardServiceContext.Provider>
+      </ErrorBoundry>
+    </Provider>
+ // </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

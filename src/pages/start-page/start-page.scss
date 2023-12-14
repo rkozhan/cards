@@ -1,0 +1,34 @@
+.start-page {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    text-align: center;
+    max-height: 100vh;
+
+    h2 {
+    }
+    .current-card {
+        flex-basis: 100vw;
+
+    }
+    &__btns {
+        display: flex;
+        align-items: stretch;
+        justify-content: space-between;
+        padding: 1em 0.5em;
+        button {
+            background-color:dimgray;
+            color: black;
+            font-size: 2em;
+            line-height: 2em;
+            flex-basis: 25%;
+            &:not(:last-child) {
+                border-right: 4px solid black;
+            }
+            &:active, &:hover {
+                color: #555;
+            }
+        }
+    }
+}
