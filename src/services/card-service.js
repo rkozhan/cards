@@ -25,6 +25,7 @@ export default class CardService {
         const cleanData = data.filter(card => {
             if (card.de) return card;
         });  
+
         return cleanData.map(this._transformCard);       
     }
 
@@ -35,11 +36,14 @@ export default class CardService {
                 rus: card.rus,
                 eng: card.eng,
                 type: card.type,
-                sex: card.sex,
-                pl: card.pl        
+                gen: card.gen,
+                th: card.th,       //theme
+                pl: card.pl,       //plural 
+                pr: card.pr,       //pretaeritum 
+                pa: card.pa,       //partizip II 
+                ko: card.ko,       //komparativ 
+                su: card.su,       //superlativ 
                 }
-
-      
     }
 
     randomCards = (num, currentCards, allCards, remembered, prevPropsCurrentCards) => {
@@ -68,53 +72,6 @@ export default class CardService {
         }
     }
 
-    //------------------------------------------------------------------ COOKIES
-
-    setCookie = (cname, cvalue, exdays = 100) => {
-        console.log('setCookie()');
-        const d = new Date();
-        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-        let expires = "expires="+d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-    }
-    /*
-    getCookie = (name) => {
-        let matches = document.cookie.match(new RegExp(
-          "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-        ));
-        return matches ? decodeURIComponent(matches[1]) : undefined;
-    }*/
-
-    getCookie = (cname) => {
-        let name = cname + "=";
-        let ca = document.cookie.split(';');
-        for(let i = 0; i < ca.length; i++) {
-          let c = ca[i];
-          while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-          }
-          if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-          }
-        }
-        return "";
-    }
-/*
-      mapCookieIdsToCards = (cname, dataBase) => {
-        const cook = this.getCookie(cname);
-        const cooksArr = Array.from(cook.split(',')).map(item => Number(item))
-        const cardsFromCooksArr = dataBase.filter(el => cooksArr.includes(el.id)); //this ordered id from 0 to max
-        console.log(cooksArr);
-        console.log(cardsFromCooksArr);
-        //return cardsFromCooksArr;
-    }*/
-
-    mapCookieIdsToCards = (cname, dataBase) => {
-        const cooksArr = Array.from(this.getCookie(cname).split(',')).map(item => Number(item))
-        return dataBase.filter(el => cooksArr.includes(el.id)); //this ordered id from 0 to max
-
-        //return cardsFromCooksArr;
-    }
 }
 
 

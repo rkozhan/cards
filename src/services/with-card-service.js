@@ -1,4 +1,4 @@
-import CardServiceContext from "../card-service-context/card-service-context";
+import CardServiceContext from "./card-service-context";
 
 const WithCardService = () => (Wrapped) => {
     return (props) => {

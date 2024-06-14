@@ -7,7 +7,7 @@ import { BrowserRouter as Rowter} from 'react-router-dom';
 
 import ErrorBoundry from './components/error-boundry/error-boundry';
 import CardService from './services/card-service';
-import CardServiceContext from './components/card-service-context/card-service-context';
+import CardServiceContext from './services/card-service-context';
 import store from './store';
 
 import './index.css';

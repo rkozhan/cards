@@ -2,7 +2,7 @@ import { Component } from "react";
 import { connect } from "react-redux";
 
 import './start-page.scss';
-import CurrentCard from "../../components/current-card/current-card";
+import CurrentCard from "./current-card";
 import { deleteCurrentCard, changeShowedCurrentCard, toggleRemembered, toggleLiked} from "../../actions/action";
 import { setCookie } from "../../services/cookie";
 
@@ -36,38 +36,27 @@ class StartPage extends Component{
         }
     }
 
-    componentDidMount () {
-        //console.log(`sp didM: cur ${this.props.currentCards.length}`);
-        /*if (this.props.currentCards.length) {
-            this.props.changeShowedCurrentCard(this.getNextCard(this.props.currentCards));
-        }*/
-    }
-
-    
-
     render() {
         const {currentCards, showedCurrentCard, changeShowedCurrentCard, deleteCurrentCard, toggleRemembered, toggleLiked} = this.props;
-        
         //console.log(`sp rnd: cur ${this.props.currentCards.length}`);
         return (
             <div className="start-page">
-                <h2>Currend words <span></span></h2>
+                <h2>Cards<span></span></h2>
                 <CurrentCard/>
                 <div className="start-page__btns">
                     <button onClick={() => changeShowedCurrentCard(this.getPrevCard(currentCards, showedCurrentCard.id))}>&#9664;</button>
                     <button onClick={ async () => {
                             await toggleLiked(showedCurrentCard.id);
                             setCookie('liked', this.props.liked);
-                            }}>&#9829;</button> 
+                            }}>&#9733;</button> 
                     <button onClick={ async () => {
                         if(showedCurrentCard.id !== undefined) {
-                            //deleteCurrentCard(showedCurrentCard.id);
                             deleteCurrentCard(showedCurrentCard);
                             await toggleRemembered(showedCurrentCard.id);
                             setCookie('rememberedCards', this.props.rememberedCards)
                             console.log(`toRemembered: cur ${this.props.currentCards.length}`);
                         }
-                    }}>&#10004;</button>
+                    }}>&#10003;</button>
                     <button onClick={() => {
                                 changeShowedCurrentCard(this.getNextCard(currentCards, showedCurrentCard.id))}
                             }>&#9654;</button>

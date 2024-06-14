@@ -25,6 +25,13 @@ const cookiesToState = (cookies) => {
     };
 };
 
+const changeFormStatus = (status) => { /////////////////////////////////
+    return {
+        type: 'FORM_STATUS',
+        payload: status
+    };
+};
+
 const selectedWord = (id) => { /////////////////////////////////
     return {
         type: 'WORD_SELECTED',
@@ -93,13 +100,56 @@ const setRus = () => {
         type: 'SET_RUS'
     };
 };
+const setTheme = (theme) => {
+    return {
+        type: 'SET_THEME',
+        payload: theme
+    };
+}
+const addThemesToState = (theme) => {
+    return {
+        type: 'ADD_THEME',
+        payload: theme
+    };
+}
+const addLenghtToState = (lenght) => {
+    return {
+        type: 'ADD_LENGHT',
+        payload: lenght
+    };
+}
 const setNum = (num) => {
     return {
         type: 'SET_NUM',
         payload: num
     };
 };
-
+const filterSort = () => {
+    return {
+        type: 'FILTER_SORT'
+    };
+};
+const filterLiked = () => {
+    return {
+        type: 'FILTER_LIKED'
+    };
+};
+const filterRemembered = () => {
+    return {
+        type: 'FILTER_REMEMBERED'
+    };
+};
+const filterAll = () => {
+    return {
+        type: 'FILTER_ALL'
+    };
+};
+const filterSearch = (value) => {
+    return {
+        type: 'FILTER_SEARCH',
+        payload: value
+    };
+};
 
 /*
 const addedToCart = (id) => {
@@ -120,6 +170,8 @@ export {
     cardsLoaded,
     cardsRequested,
     cardsError,
+    
+    changeFormStatus,
 
     cookiesToState,
 
@@ -137,6 +189,14 @@ export {
 
     setEng,
     setRus,
-    setNum
+    setTheme,
+    addThemesToState,
+    addLenghtToState,
+    setNum,
 
+    filterSort,
+    filterLiked,
+    filterRemembered,
+    filterAll,
+    filterSearch
 };

@@ -1,15 +1,19 @@
+import filter from "../pages/all-words-page/filter";
+
 const initialState = {
     cards: [],//--[{},{}]
+    cardsLenght: 0,
     error: false,
     loading: true,
+    formStatus: '',
     //////////////////////////////////////////////////////// this to / from cookies
     currentCards: [],//--[{},{}]
     rememberedCards: [],//--[id,id]
     liked: [],//--[id,id]
     ////////////////////////////////////////////////////////////////////////
-    showedCurrentCard:  {de: `Willkommen hier! Tipp auf die Kartchen, um sie umzudrehen, verwende die Pfeile, merk die Wörter zu, und füg sie zu deinen Favoriten hinzu. Viel Erfolg!`,
-        eng: `Welcome here! Tap on the card to flip it, use the arrows, memorize the words, and add them to your favorites. Good luck!`,
-        rus: `Добро пожаловать! Тапни по карточке для переворота, используйте стрелки, запоминайте слова и добавляйте их в избранное. Успехов!`
+    showedCurrentCard:  {de: `Hallo!`,
+        eng: `Hi!`,
+        rus: `Привет!`
     },
     //////////////////////////////////////////////////////////////////////////
     selectedWordId: 777, //// ????????????????????????????????????????????????????????????
@@ -20,10 +24,15 @@ const initialState = {
     //Darkmode: false,
     showEng: true,
     showRus: true,
-    //resetRemembered: false,
-    //resetLiked: false,
+    showTheme: [],
+    themes: [],
     ////////////////////////////--filter
-
+    filter: {
+        liked: false,
+        remembered: false,
+        sort: false,
+        term: ''
+    }
 }
 
 const reducer = (state = initialState, action) => {
@@ -31,7 +40,10 @@ const reducer = (state = initialState, action) => {
         case 'CARDS_LOADED':
             return {
                 ...state,
-                cards: action.payload,
+                cards: [
+                    ...state.cards,
+                    ...action.payload
+                ],
                 loading: false,
             };
             
@@ -48,37 +60,33 @@ const reducer = (state = initialState, action) => {
                 loading: false,
                 error: true
             };
+        case 'FORM_STATUS':
+            return {
+                ...state,
+                formStatus: action.payload
+            };
 
 
         case 'COOKIES_TO_STATE':
             console.log('REDUCER COOKIES_TO_STATE');
-            const {rememberedCards, liked, currentCardsNum, showRus, showEng} = action.payload;
+            const {rememberedCards, liked, currentCardsNum, showRus, showEng, showTheme} = action.payload;
             return currentCardsNum ? {
                 ...state,
                 currentCardsNum: currentCardsNum,
                 liked: liked,
                 rememberedCards: rememberedCards,
                 showRus: showRus,
-                showEng: showEng
+                showEng: showEng,
+                showTheme: showTheme
             } : {
                 ...state,
                 liked: liked,
                 rememberedCards: rememberedCards,
                 showRus: showRus,
-                showEng: showEng
+                showEng: showEng,
+                showTheme: showTheme
             };
-/*
-        case 'COOKIES_TO_STATE':
-            //const {rememberedCards, liked, currentCardsNum} = action.payload;
-            console.log('REDUCER COOKIES_TO_STATE');
-            return {
-                ...state,
-                //rememberedCards: action.payload.rememberedCards,
-                //liked: action.payload.liked,
-                //currentCardsNum: action.payload.currentCardsNum
-                currentCardsNum: action.payload
-            };
-*/
+
         case 'WORD_SELECTED':
             console.log(`REDUCER SELECTED WORD ${action.payload}`);
             return {
@@ -197,6 +205,101 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 currentCardsNum: action.payload
                 };
+        case 'SET_THEME':
+            const theme = action.payload;
+            const th = state.showTheme.findIndex(item => item === theme);
+            if (th === -1) {              
+                return {
+                    ...state,
+                    showTheme: [
+                        ...state.showTheme,
+                        theme
+                    ]
+                }                
+            }
+            else {
+                return {
+                    ...state,
+                    showTheme: [
+                        ...state.showTheme.slice(0, th),
+                        ...state.showTheme.slice(th + 1)
+                    ]
+                };
+                
+            };
+        case 'ADD_THEME':
+            const thX = state.themes.findIndex(item => item === action.payload);
+            if (thX === -1) {              
+                return {
+                    ...state,
+                    themes: [
+                        ...state.themes,
+                        action.payload
+                    ]
+                }                
+            }
+            else {
+                return {
+                    ...state,                    
+                };                
+            };
+        case 'ADD_LENGHT':
+            return {
+                ...state,
+                cardsLenght: action.payload
+
+            };                
+        case 'FILTER_SORT':
+            return {
+                ...state,
+                filter: {
+                    ...state.filter,
+                    sort: !state.filter.sort
+                }
+            };
+        case 'FILTER_LIKED':
+            return {
+                ...state,
+                filter: {
+                    ...state.filter,
+                    remembered: false,
+                    term: '',
+                    liked: !state.filter.liked
+                }
+            };
+        case 'FILTER_REMEMBERED':
+            return {
+                ...state,
+                filter: {
+                    ...state.filter,
+                    term: '',
+                    liked: false,
+                    remembered: !state.filter.remembered
+                }
+            };
+        case 'FILTER_ALL':
+            return {
+                ...state,
+                filter: {
+                    ...state.filter,
+                    term: '',
+                    liked: false,
+                    remembered: false
+                }
+            };
+        case 'FILTER_SEARCH':
+            return {
+                ...state,
+                filter: {
+                    ...state.filter,
+                    liked: false,                    
+                    remembered: false,
+                    term: action.payload
+                }
+            };
+
+
+            
 
             /*
         case 'ITEM_ADD_TO_CART':

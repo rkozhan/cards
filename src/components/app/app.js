@@ -1,21 +1,24 @@
 import { Component } from 'react';
 import {Route, Routes} from  'react-router-dom';
+import './app.scss';
+import LockOrientation from '../../services/lock-orientation';
 
 import AppHeader from './../app-header/app-header';
 import StartPage from '../../pages/start-page/start-page';
-import AllCardsPage from '../../pages/all-cards-page/all-cards-page';
+import AllWordsPage from '../../pages/all-words-page/all-words-page';
 import SettingsPage from '../../pages/settings-page/settings-page';
 
 import {connect} from 'react-redux';
-import WithCardService from '../hoc/with-card-service';
-import { cardsLoaded, cardsRequested, cardsError, addCurrentCards, cookiesToState } from "../../actions/action";
+import WithCardService from '../../services/with-card-service';
+import { cardsLoaded, cardsRequested, cardsError, addCurrentCards, cookiesToState, addThemesToState, addLenghtToState } from "../../actions/action";
 
 import { getAllCookies, delCookie, setCookie, mapCookieIdsToCards, getCookie} from '../../services/cookie';
 
+LockOrientation();
 class App extends Component {
     
     //xyz = setCookie('currentCardsNum', 6);
-    //bar = delCookie('rememberedCards');
+    //bar = delCookie('showTheme');
 
     allCookies = getAllCookies();
     toState = this.props.cookiesToState(this.allCookies);
@@ -32,13 +35,23 @@ class App extends Component {
     componentDidMount() {
         this.props.cardsRequested();
         this.props.CardService.getCards()
+            .then(res => {
+                res.forEach(card => {
+                    if (card.th) this.props.addThemesToState(card.th);               
+                });
+                if (res.length) this.props.addLenghtToState(res.length);
+                return res;
+                }
+            )
+            .then(res => res = res.filter(item => {
+                return !this.props.showTheme.includes(item.th);
+            }))
             .then(res => this.props.cardsLoaded(res))
             // НЕ ТРОГАТЬ
             .then(res => {
-                //this.props.addCurrentCards(this.mapCookieIdsToCards(this.cookieArr, res.payload));  /////////////
                 if (this.allCookies.currentCards.length) {
-                    this.props.addCurrentCards(mapCookieIdsToCards(this.allCookies.currentCards, res.payload));  /////////////
-                    console.log(mapCookieIdsToCards(this.allCookies.liked, res.payload));
+                    this.props.addCurrentCards(mapCookieIdsToCards(this.allCookies.currentCards, res.payload));  
+                    console.log(mapCookieIdsToCards(this.allCookies.liked, res.payload)); /////////////
                 } 
             })
             // --------------
@@ -61,14 +74,15 @@ class App extends Component {
     }
         
     render () {
+        console.log(this.props.allCards);
         this.toConsole("RENDER", this.props);/////////////////////////////////////////////////////////////////////
         return (
             <div className="app">
                 <AppHeader/>
                 <Routes>
-                    <Route path='/' exact element={<StartPage/>}/>
-                    <Route path='/all-cards' exact element={<AllCardsPage/>}/>
-                    <Route path='/settings' exact element={<SettingsPage/>}/>
+                    <Route path='/cards/' exact element={<StartPage/>}/>
+                    <Route path='/cards/all-words' exact element={<AllWordsPage/>}/>
+                    <Route path='/cards/settings' exact element={<SettingsPage/>}/>
                     
                     
                 </Routes>
@@ -82,7 +96,8 @@ const mapStateToProps = (state) => {
         allCards: state.cards,
         currentCards: state.currentCards,
         num: state.currentCardsNum,
-        remembered: state.rememberedCards
+        remembered: state.rememberedCards,
+        showTheme: state.showTheme
     }
 }
 
@@ -91,7 +106,9 @@ const mapDispatchToProps = {
     cardsRequested,
     cardsError,
     addCurrentCards,
-    cookiesToState
+    cookiesToState,
+    addThemesToState,
+    addLenghtToState
 }
 
 export default WithCardService()(connect(mapStateToProps, mapDispatchToProps)(App));

@@ -1,14 +1,90 @@
 .header {
-    background-color: #333;
     display: flex;
     justify-content: space-between;
-    .header__link {
-        height: 3em;
-        line-height: 3em;
-        padding: 0 1em;
-        &:not(:last-child) {
-            border-right: 4px solid black;
-        }
+    background: linear-gradient(black, rgba(0, 120, 120, 0.5));
+    z-index: 15;
 
+    .header__link {
+        z-index: 1;
+        width: 32%;
+        display: flex;
+        height: 40px;
+
+        &.active {
+            background-color: black;
+        }
+        span {
+            display: block;
+            margin: auto;
+            font-size: 2em;
+            margin-top: 4px;            
+            color:rgb(0, 120, 120);
+        }
     }
+
+}
+#cardsPic {
+    position: relative;
+    z-index: 1;
+    
+    &:before, &:after {
+        position: absolute;
+        content: 'De';
+        color: white;
+        font-size: 11px;
+        line-height: 12px;
+    }
+    &:before {
+        z-index: -1;
+        bottom: -5px;
+        left: -5px;
+        background-color: green;
+    }
+    &:after {
+        bottom: -9px;
+        left: -9px;
+    }
+}
+#cardsPic, #cardsPic:before, #cardsPic:after {
+    display: block;
+    height: 14px;
+    width: 14px;
+    //background-color: rgb(0, 120, 120);
+    background: linear-gradient(180deg, black 0 35%,
+                                        rgb(255, 0, 0) 35% 68%,
+                                        rgb(255, 200, 0) 68% 100%);
+    border: 2px solid white;   
+}
+
+#wordsPic {
+    display: block;
+    background-color: rgb(100, 150, 150);
+    width: 23px;
+    height: 23px;
+    border: 2px solid white;
+    position: relative;
+    &::before, &::after {
+        content: '';
+        position: absolute;
+        display: block;
+        right: 3px;
+        width: 17px;
+        height: 3px;
+        border-top: 2px solid black;
+        border-bottom: 2px solid black;
+    }
+    &::before{
+        top: 3px;
+    }
+    &::after{
+        top: 13px;
+    }
+}
+#settingsPic {
+    display: block;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    border: 4px dotted white;
+    box-shadow: inset 0 0 0 2px white, inset 0 0 0 5px #777;    
 }

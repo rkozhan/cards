@@ -1,22 +1,27 @@
 import { Link } from 'react-router-dom';
 import './app-header.scss';
+import { Component } from 'react';
 
-const AppHeader = () => {
-    return (
-        <header className="header">
-            <Link to='/' className="header__link">
-                Current Cards
-            </Link>
-
-            <Link to='/all-cards/' className="header__link">
-                All cards
-            </Link>
-
-            <Link to='/settings/' className="header__link">
-                Settings
-            </Link>
-        </header>
-    )
+class AppHeader extends Component {
+    onLink = (e) => {
+        if (e && e.target.closest('.header__link')) {
+            const current = e.target.closest('.header__link');
+            document.querySelectorAll('.header__link').forEach(el => el.classList.remove('active'));
+            current.classList.add('active');
+        }                       
+    }
+    render () {
+        return (
+            <header className="header" onClick={(e) => this.onLink(e)}>
+                <Link to='/cards/'  className="header__link active"><span><span id='cardsPic'></span></span></Link>
+                <Link to='/cards/all-words/' className="header__link"><span><span id='wordsPic'></span></span></Link>
+                <Link to='/cards/settings/' className="header__link"><span><span id='settingsPic'></span></span></Link>
+            </header>
+        )  
+    }
 };
-
 export default AppHeader;
+
+//&#128455;
+//&#128457;
+//&#9965;

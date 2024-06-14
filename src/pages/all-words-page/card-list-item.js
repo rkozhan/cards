@@ -4,12 +4,11 @@ import { setCookie } from '../../services/cookie';
 import {  toggleLiked, removeFromRemembered } from "../../actions/action";
 import { Component } from 'react';
 
-
 class CardListItem extends Component {
     
     render () {
         const {card,  liked, rememberedCards, toggleLiked, removeFromRemembered, showEng, showRus } = this.props; 
-        const {de, rus, eng, sex, id} = card;
+        const {de, rus, eng, gen, id, pl, pr, pa, th} = card;
    
         let isLike = '';
         let isRemebered = '';
@@ -25,14 +24,21 @@ class CardListItem extends Component {
                                     onClick={ async () => {
                                         await toggleLiked(id);
                                         setCookie('liked', this.props.liked);
-                                    }}>&#9829;</span>
+                                    }}>&#9733;</span>
                     <span id='memo' className={isRemebered}
                                     onClick={ async () => {
                                         removeFromRemembered(id);
                                         setCookie('rememberedCards', this.props.rememberedCards);
-                                    }}>&#10004;</span>
+                                    }}>&#10003;</span>
                 </div>
-                <div className="card__de">{sex && <span className={sex}>{sex} </span>}{de}</div>
+                <div className="card__de">
+                    {gen && <span className={gen}>{gen} </span>}
+                    {de}
+                    <span className='card__item_th'>{th}</span>
+                </div>
+
+                {gen && (pl && <div className='hide'>die {pl}</div> || <div className='hide'>Sg.</div>)}
+                {pr && <div className='hide'>{pr} / {pa && pa}</div>}
                 {showRus && <div className="card__rus">{rus}</div>}
                 {showEng && <div className="card__eng">{eng}</div>}
             </li>

@@ -32,6 +32,15 @@ const cookieToArr = (cname) => {
   }
 }
 
+const cookieToStringArr = (cname) => {
+  const cookie = getCookie(cname);
+  if (cookie !== undefined && cookie !== '') {
+    return Array.from(cookie.split(','));
+  } else {
+    return [];
+  }
+}
+
 const cookieToNum = (cname) => {
   const cookie = getCookie(cname);
   if (cookie !== undefined && cookie !== '') {
@@ -54,8 +63,8 @@ const getAllCookies = () => {
     liked: cookieToArr('liked'),
     currentCardsNum: cookieToNum('currentCardsNum'),
     showRus:  cookieToBoolean('showRus'),
-    showEng:  cookieToBoolean('showEng')
-
+    showEng:  cookieToBoolean('showEng'),
+    showTheme: cookieToStringArr('showTheme'),
   }
 }
 
